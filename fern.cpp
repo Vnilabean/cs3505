@@ -6,8 +6,6 @@ const int width = 120; // set width and height as desired
 const int height = 120;
 const double xMax = 2.75; // keep xMax and yMax at these values
 const double yMax = 10.5;
-// initialize the image array
-const unsigned char image[(width * height) / 8] = {0};
 // initialize the transformation values using an array of arrays: array x is funciton number and y is values
 const double transformValues[4][6] = {
         {0, 0, 0, 0, 0.16, 0},
@@ -15,6 +13,12 @@ const double transformValues[4][6] = {
         {0.20, -0.26, 0, 0.23, 0.22, 1.6},
         {-0.15, 0.28, 0, 0.26, 0.24, 0.44}
     };
+// declare the functions that will be used out of order
+int selectTransformation();
+void applyTransformation(double& x, double& y, const double* transformation);
+void setPixel(double x, double y, unsigned char* image);
+
+
 /**
  * Performs the specified number of iterations by repeatedly selecting a transformation function,
  *  applying that transformation, and setting the pixel based on the resulting x and y values. 
@@ -80,20 +84,24 @@ void applyTransformation(double& x, double& y, const double* transformation){
  * Although you could determine the ranges of x and y through experiment, I provided you with an approximate range.
  *  Values of x will be between -2.75 and 2.75.
  *  Values of y will be between 0.0 and 10.5 (hence the xMax and yMax constants you added above). 
- * To avoid spending too much time on this math problem, try adapting this code for your use:
 */
 void setPixel(double x, double y, unsigned char* image) {
     int pixelX = width / 2 + (int)(width * x / xMax / 2);
     int pixelY = (int)(height * y / yMax);
-
-
+    int pixel = pixelY * width + pixelX;
+    int bit = pixel % 8;
+    int index = pixel / 8;
+    image[index] = image[index] | (1 << bit);
 }
 
 /**
  * Returns true if the pixel at the given row and column in the image is set. In other words, that bit has value 1.
 */
 bool getPixel(int row, int col, unsigned char* image){
-
+    int pixel = row * width + col;
+    int bit = pixel % 8;
+    int index = pixel / 8;
+    return (image[index] & (1 << bit)) != 0;
 }
 
 /**
@@ -102,17 +110,8 @@ bool getPixel(int row, int col, unsigned char* image){
  * Your resulting output will depend on your width, height, and number of iterations.
 */
 void drawImage(unsigned char* image) {
-
+    
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -120,7 +119,9 @@ void drawImage(unsigned char* image) {
 int main(){
     // initialize the iteration int
     int n = 0;
+
     // gets user input for the number of iterations
+    cout << "Number of iterations: ";
     cin >> n;
 
     // checks if input of n is not negative
@@ -128,10 +129,14 @@ int main(){
     cout << "Error: Number of iterations must be non-negative." << endl;    
     }
 
-    // initinalizes the image array
+    // create image array
+    unsigned char image[(width * height) / 8] = {0};
 
-    
-    
+    // calls the performIterations function which delegates the functions needed
+    performIterations(n, image);
+
+    // calls the drawImage function which prints the image
+    drawImage(image);
 
     return 0;
 }

@@ -2,17 +2,39 @@
 
 using namespace std; 
 
-const int width = ???; // set width and height as desired
-const int height = ???;
+const int width = 120; // set width and height as desired
+const int height = 120;
 const double xMax = 2.75; // keep xMax and yMax at these values
 const double yMax = 10.5;
-
+// initialize the image array
+const unsigned char image[(width * height) / 8] = {0};
+// initialize the transformation values using an array of arrays: array x is funciton number and y is values
+const double transformValues[4][6] = {
+        {0, 0, 0, 0, 0.16, 0},
+        {0.85, 0.04, 0, -0.04, 0.85, 1.6},
+        {0.20, -0.26, 0, 0.23, 0.22, 1.6},
+        {-0.15, 0.28, 0, 0.26, 0.24, 0.44}
+    };
 /**
  * Performs the specified number of iterations by repeatedly selecting a transformation function,
  *  applying that transformation, and setting the pixel based on the resulting x and y values. 
  * Note that these tasks are done by calling the functions below.
 */
 void performIterations(int iterations, unsigned char* image){
+
+    for(int i = 0; i < iterations; i++){
+        // select transformation
+        int transformation = selectTransformation();
+        // get x and y
+        double x = 0;
+        double y = 0;
+        // apply transformation
+        applyTransformation(x, y, transformValues[transformation]);
+        // set pixel
+        setPixel(x, y, image);
+        x++;
+        y++;
+    }
 
 }
 
@@ -45,7 +67,10 @@ int selectTransformation(){
  *  ** see canvas page for visuals on how to do this**
 */
 void applyTransformation(double& x, double& y, const double* transformation){
-
+    double newX = transformation[0] * x + transformation[1] * y + transformation[2];
+    double newY = transformation[3] * x + transformation[4] * y + transformation[5];
+    x = newX;
+    y = newY;
 }
 
 /**
@@ -58,8 +83,10 @@ void applyTransformation(double& x, double& y, const double* transformation){
  * To avoid spending too much time on this math problem, try adapting this code for your use:
 */
 void setPixel(double x, double y, unsigned char* image) {
-    //pixelX = width / 2 + (int)(width * x / xMax / 2);
-    //pixelY = (int)(height * y / yMax);
+    int pixelX = width / 2 + (int)(width * x / xMax / 2);
+    int pixelY = (int)(height * y / yMax);
+
+
 }
 
 /**
@@ -100,6 +127,11 @@ int main(){
     if(n < 0) {
     cout << "Error: Number of iterations must be non-negative." << endl;    
     }
+
+    // initinalizes the image array
+
+    
+    
 
     return 0;
 }

@@ -1,14 +1,15 @@
-#include "Transform.h"
-#include "Point.h"
+#include "transform.h"
+#include "point.h"
 
 int main() {
 
     //  Create the point 1.0, 0
     Point pt(1.0, 0.0);
 
-    // Create a transformation
-    double values[6] = {1.0113, -0.1788, 0.0, 0.1788, 1.0113, 0.0};
-    Transform tr(values);
+    // points for my run of transform
+    // -1.06, -0.000788, 0.55555, 0.9954, 1.0512, 1.0
+
+    Transform tr(1.0113, -0.1788, 0.0, 0.1788, 1.0113, 0.0);
 
     for (int i = 0; i < 200; i++)
     {

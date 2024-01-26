@@ -7,7 +7,7 @@ By Eric Heisler and Philippe Gonzalez
 */
 
 #include <iostream> // for ostream
-#include "Transform.h"
+#include "transform.h"
 class Transform;
 
 /**

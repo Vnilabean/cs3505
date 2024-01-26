@@ -1,4 +1,4 @@
-#include "Transform.h"
+#include "transform.h"
 #include <iostream>
 /*
 Transform class for CS 3505 assignment 2.
@@ -8,10 +8,13 @@ Transforms a 2-D point
 
 Transform::Transform() {}
 
-Transform::Transform(double initValues[6]) {
-    for(int i = 0; i < 6; i++){
-        transformValues[i] = initValues[i];
-    }
+Transform::Transform(double a, double b, double c, double d, double e, double f) {
+    transformValues[0] = a;
+    transformValues[1] = b;
+    transformValues[2] = c;
+    transformValues[3] = d;
+    transformValues[4] = e;
+    transformValues[5] = f;
 }
 
 Transform::~Transform() {}

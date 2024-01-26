@@ -2,7 +2,7 @@
 #define TRANSFORM_H
 
 #include <iostream>
-#include "Point.h"
+#include "point.h"
 class Point;
 
 /**
@@ -23,9 +23,8 @@ public:
 
     /**
      * @brief Constructor that initializes the transformation array with the given values
-     * @param initValues A array of 6 double values representing the transformation values
      */
-    Transform(double initValues[6]);
+    Transform(double a, double b, double c, double d, double e, double f);
 
     /**
      * @brief Destructor for the transform class

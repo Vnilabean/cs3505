@@ -6,10 +6,6 @@ A Point holds x and y values.
 By Eric Heisler and STUDENT_NAME
 */
 
-// Implement the methods prototyped in point.h
-// You can include comments here if desired, 
-// but they are already documented in point.h
-
 Point::Point() {}
 
 Point::Point(double initx, double inity) : x(initx), y(inity) {}

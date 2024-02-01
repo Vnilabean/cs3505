@@ -1,6 +1,6 @@
 /**
- * @ author: Philippe Gonzalez
- * @ note: CS3505 Assignment 3
+ * @author: Philippe Gonzalez
+ * @note: CS3505 Assignment 3
 */
 
 #include "transform.h"
@@ -13,16 +13,13 @@
 using namespace std; 
 
 
-// initialize the transformation values using an array of arrays: array x is funciton number and y is values
+// initialize the transformation values
 Transform t1 = Transform(0, 0, 0, 0, 0.16, 0);
 Transform t2 = Transform(0.85, 0.04, 0, -0.04, 0.85, 1.6);
 Transform t3 = Transform(0.20, -0.26, 0, 0.23, 0.22, 1.6);
 Transform t4 = Transform(-0.15, 0.28, 0, 0.26, 0.24, 0.44);
 const double xMax = 2.75;
 const double yMax = 10.5;
-
-
-// declare the functions that will be used
 int selectTransformation();
 
 /**
@@ -49,10 +46,11 @@ void applyIterations(int iterations, PNGWriter& png, int width, int height){
                 p = t4 * p;
                 break;
         }
-        // set pixel
+        // get pixel corrdinates value then set it
         int pixelX = width / 2 + (int)(width * p.getX() / xMax / 2);
         int pixelY = height - (int)(height * p.getY() / yMax); 
-        png.setPixel(pixelX, pixelY);
+        // set pixel to green
+        png.setPixel(pixelX, pixelY, 104, 160, 100, 255);
     }
 }
 
@@ -79,23 +77,24 @@ int selectTransformation(){
 int main(int argc, char *argv[]) {
     int width;
     int height;
+    // check for valid number of arguments
     if(argc != 5){
         cout << "Requires 4 arguments: filename, width, height, iterations" << endl;
         return 0;
     }
+    // get width and height from arguments
     stringstream widthStream(argv[2]);
     stringstream heightStream(argv[3]);
     widthStream >> width;
     heightStream >> height;
-
+    // check for valid width and height
     if(width < 1 || height < 1){
     cout << "Width and height were not valid values > 0" << endl;
     return 0;
     }
-
+    // create PNGWriter object and apply iterations
     PNGWriter png = PNGWriter(width, height);
     applyIterations(stoi(argv[4]), png, width, height);
     png.writePNGFile(argv[1]);
-
     return 0;
 }

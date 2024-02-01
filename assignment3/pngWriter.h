@@ -1,3 +1,8 @@
+/**
+ * @file pngWriter.h
+ * @brief A class for writing PNG files
+ * @author Philippe Gonzalez
+*/
 #ifndef PNGWRITER_H
 #define PNGWRITER_H
 
@@ -42,6 +47,18 @@ public:
 
     /**
      * @brief Sets the pixel at the specified coordinates
+     * @param x The x coordinate of the pixel
+     * @param y The y coordinate of the pixel
+     * @param r The red value of the pixel
+     * @param g The green value of the pixel
+     * @param b The blue value of the pixel
+     * @param a The alpha value of the pixel
+     */
+    void setPixel(int x, int y, int r, int g, int b, int a);
+
+    /**
+     * @brief Sets the pixel at the specified coordinates to black
+     * @brief Thought it would be useful to have a default color pixel setter
      * @param x The x coordinate of the pixel
      * @param y The y coordinate of the pixel
      */

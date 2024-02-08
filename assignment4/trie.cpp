@@ -20,14 +20,14 @@ trie::~trie() {
     delete root;
 }
 
-int trie::operator= (const trie& rhs) {
+trie& trie::operator= (const trie& rhs) {
     if (this == &rhs) {
-        return 0;
+        return *this;
     }
     delete root;
     root = new Node();
     *root = *rhs.root;
-    return 0;
+    return *this;
 }
 
 void trie::addWord(const std::string& word) {
@@ -44,6 +44,8 @@ void trie::addWord(const std::string& word) {
         // move to the next node
         currentNode = currentNode->children[currentChar - 'a'];
     }   
+    // set isword to true
+    currentNode->isWord = true;
 }
 
 bool trie::isWord(const std::string& word) {
@@ -71,6 +73,7 @@ bool trie::isWord(const std::string& word) {
         // move to the next node
         currentNode = currentNode->children[currentChar - 'a'];
     }
+    return currentNode->isWord;
 }
 
 std::vector<std::string> trie::allWordsStartingWithPrefix(std::string prefix) {
@@ -78,23 +81,32 @@ std::vector<std::string> trie::allWordsStartingWithPrefix(std::string prefix) {
     Node* currentNode = root;
     // get the the node of the last char then add every recursive char
     // in the node to the prefix and add that to the words vector
-    for (int i = 0; i < prefix.length(); i++) {
-        char currentChar = prefix[i];
-        // check if the char is valid
-        if (currentChar < 'a' || currentChar > 'z') {
+
+    // prefix validation
+    for(char c : prefix) {
+        if(c < 'a' || c > 'z') {
             return words;
         }
-        if (currentNode->children[currentChar - 'a'] == NULL) {
-            // check all non null values in this currentnode children and add them to the prefix and add to words
-            for (int j = 0; j < 26; j++) {
-                if (currentNode->children[j] != NULL) {
-                    std::string newPrefix = prefix + (char)('a' + j);
-                    std::vector<std::string> newWords = allWordsStartingWithPrefix(newPrefix);
-                    words.insert(words.end(), newWords.begin(), newWords.end());
-                }
-            }
-        }
-        currentNode = currentNode->children[currentChar - 'a'];
     }
     
+    // recurse through the trie to find all the words with the prefix
+    findAllPrefixes(currentNode, prefix, words);
+
+    return words;
+}
+
+void trie::findAllPrefixes (Node* node, std::string prefix, std::vector<std::string>& words) {
+    // if the node is null, return
+    if (node == NULL) {
+        return;
+    }
+
+    if(node->isWord) {
+        words.push_back(prefix);
+    }
+
+    for (int i = 0; i < 26; i++) {
+    findAllPrefixes(node->children[i], prefix + (char)('a' + i), words);
+    }
+
 }

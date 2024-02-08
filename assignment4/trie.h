@@ -32,7 +32,7 @@ class trie {
          * @brief Overloaded assignment operator
          * @param rhs The trie object to be copied
         */
-        int operator= (const trie& rhs);
+        trie& operator= (const trie& rhs);
 
         /**
          * @brief The word passed into the method should be added to the Trie object. 
@@ -59,16 +59,30 @@ class trie {
          *  that begin with the passed in argument prefix string.
         */
         std::vector<std::string> allWordsStartingWithPrefix(std::string prefix);
+        
+        
 
+        
     private:
         /**
          * @brief Node struct to represent each node in the trie
         */
         struct Node {
-            // must represent the branching as an array of C-style pointers to nodes
+            bool isWord;
             Node* children[26];
         };
+        // must represent the branching as an array of C-style pointers to nodes
+        Node* children[26];
+       
         
+        /**
+         * @brief recursive function to find all the prefixes in the trie
+         * @param node The current node
+         * @param prefix The prefix to search for
+         * @param words The vector to store the words, passed by reference to avoid copying everytime
+        */
+        void findAllPrefixes(Node* node, std::string prefix, std::vector<std::string>& words);
+
         Node* root;
 
 };

@@ -1,6 +1,5 @@
 app
-apples
-applessss
-appalat
-ap
-applesauce
+apps
+apple
+faketext
+applestation

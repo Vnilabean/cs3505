@@ -4,97 +4,115 @@
 #include "trie.h"
 using namespace std;
 
-
-
-int main(int argc, char* argv[]) {
-    if (argc < 3) {
+int main(int argc, char *argv[])
+{
+    if (argc < 3)
+    {
         cout << "Usage: " << argv[0] << " <words_file> <queries_file>" << endl;
         return 1;
     }
-    
-    ifstream trieFile(argv[1]);
+
+    ifstream TrieFile(argv[1]);
     ifstream queryFile(argv[2]);
     string line;
 
-    if (!trieFile.is_open()) {
+    if (!TrieFile.is_open())
+    {
         cout << "Unable to open the words file" << endl;
         return 1;
     }
 
-    if (!queryFile.is_open()) {
+    if (!queryFile.is_open())
+    {
         cout << "Unable to open the queries file" << endl;
         return 1;
     }
 
-    // Create a trie object
-    trie testTrie;
+    // Create a Trie object
+    Trie testTrie;
 
     // Read the words file
-    while (getline(trieFile, line)) {
-        for(char c : line) {
-            if(c < 'a' || c > 'z') {
+    while (getline(TrieFile, line))
+    {
+        for (char c : line)
+        {
+            if (c < 'a' || c > 'z')
+            {
                 cout << "Invalid character " + string(1, c) + " in the words file, should only be a-z and lowercase" << endl;
                 return 1;
             }
-            testTrie.addWord(line);
         }
+        testTrie.addWord(line);
     }
 
     // Read the queries file
     vector<string> queries;
-    while (getline(queryFile, line)) {
+    while (getline(queryFile, line))
+    {
         vector<string> words = testTrie.allWordsStartingWithPrefix(line);
         cout << "Checking " + line + ":" << endl;
-        if (words.size() == 0) {
-            cout << "No words found" << endl;
-        } 
+        if (words.size() == 0)
+        {
+            cout << "No words found" << endl
+                 << endl;
+            continue;
+        }
         cout << "Word found" << endl;
-        for (string word : words) {
+        for (string word : words)
+        {
             cout << word + " ";
         }
-        cout << endl;
+        cout << endl
+             << endl;
     }
 
-    trieFile.close();
+    TrieFile.close();
     queryFile.close();
 
     // ==========================================================================
     // rule of three tests
 
-    // Create a new trie
-    trie smallTrie;
+    Trie smallTrie;
 
-    // Add a word to the original trie
+    // Add words to the original Trie
     smallTrie.addWord("apple");
     smallTrie.addWord("apples");
     smallTrie.addWord("app");
     smallTrie.addWord("applesauce");
 
-    // Copy the original trie
-    trie copiedTrie = smallTrie;
+    // Copy the original Trie
+    Trie copiedTrie = smallTrie;
 
-    // Check if the word appears in the copied trie
-    vector<string> copiedWords = copiedTrie.allWordsStartingWithPrefix("app");
-    if (copiedWords.size() == 0) {
-        cout << "Word not found in copied Trie" << endl;
-    } else {
+    // add new item to origninal and check copy
+    smallTrie.addWord("test");
+    // Check if the word appears in the copied Trie
+    vector<string> copiedWords = copiedTrie.allWordsStartingWithPrefix("test");
+    if (copiedWords.size() == 0)
+    {
+        cout << "Word was not found in copied Trie" << endl;
+    }
+    else
+    {
         cout << "Word found in copied Trie" << endl;
     }
 
-    // Assign the original Trie to a new trie
-    trie assignedTrie = copiedTrie;
+    // assign the original Trie to a new Trie
+    Trie assignedTrie;
+    assignedTrie = smallTrie;
 
-    // Add a word to the original trie
+    // add a word to the original Trie
     smallTrie.addWord("banana");
 
-    // Check if the word appears in the assigned trie
+    // check if the word appears in the assigned Trie
     vector<string> assignedWords = assignedTrie.allWordsStartingWithPrefix("banana");
-    if (assignedWords.size() == 0) {
-        cout << "Word not found in assigned Trie" << endl;
-    } else {
-        cout << "Word found in assigned Trie" << endl;
+    if (assignedWords.size() == 0)
+    {
+        cout << "Word was not found in the assigned Trie" << endl;
     }
-    
+    else
+    {
+        cout << "Word found in the assigned Trie" << endl;
+    }
 
     return 0;
-    }
+}
